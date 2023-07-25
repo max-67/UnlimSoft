@@ -1,8 +1,10 @@
-# unlimsoft
+# UnlimSoft_test
+Application for the distribution of players into groups.<br>
+Author: Ammosov Maxim ([max-67](https://github.com/max-67))
 
 ## Project setup
 ```
-npm install
+npm install or npm i
 ```
 
 ### Compiles and hot-reloads for development
