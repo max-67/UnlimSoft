@@ -4,7 +4,7 @@
       UnlimSoft
     </div>
     <router-link to="/" class="link_text mr-4" :class="{'selected': selectedRoute == '/'}">Главная</router-link>
-    <router-link to="/groups" class="link_text" :class="{'selected': selectedRoute == '/groups'}">Группы</router-link>
+    <router-link to="/groups" class="link_text" :class="{'selected': selectedRoute == '/groups'}">Формирование групп</router-link>
   </header>
 </template>
 

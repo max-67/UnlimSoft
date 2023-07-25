@@ -52,6 +52,7 @@
       class="mt-5" 
       label="Сохранить" 
       severity="success"
+      :disabled="!groupsLoaded"
     ></Button>
   </div>
 </template>
@@ -151,6 +152,18 @@ export default {
       players_in_groups: []
     };
   },
+  computed: {
+    /**
+     * Check if the groups are full.
+     * @returns {Boolean} Groups are full.
+     */
+    groupsLoaded() {
+      for (const group of this.groups) {
+        if (group.players.length != 3) return false;
+      }
+      return true;
+    }
+  },
   methods: {
     /**
      * Saves players in groups.
@@ -192,7 +205,11 @@ export default {
      */
     movePlayerBack(e, groupId) {
       const groupSelected = this.groups.find((i) => i.group_id == groupId);
+      if (groupSelected == undefined) return;
+
       const playerSelectedIndex = groupSelected.players.findIndex((i) => i.id == e.data.id);
+      if (playerSelectedIndex == -1) return;
+
       const playerSelected = groupSelected.players[playerSelectedIndex];
       const playerSelectedCopy = JSON.parse(JSON.stringify(playerSelected));
 
@@ -206,6 +223,8 @@ export default {
      */
     movePlayerToGroup(e) {
       const playerSelectedIndex = this.players.findIndex((i) => i.id == e.data.id);
+      if (playerSelectedIndex == -1) return;
+
       const playerSelected = this.players[playerSelectedIndex];
       const playerSelectedCopy = JSON.parse(JSON.stringify(playerSelected));
 
@@ -223,8 +242,14 @@ export default {
   mounted() {
     this.$router.beforeEach(() => {
       if (!this.saved) {
-        if (confirm('Сохранить изменения?')) {
-          this.save();
+        if (!this.groupsLoaded) {
+          if (confirm('Группы заполнены не полностью, сохранение невозможно. Все равно продолжить?')) {
+            this.saved = true;
+          }
+        } else {
+          if (confirm('Сохранить изменения?')) {
+            this.save();
+          }
         }
       }
       return this.saved
